@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="https://i.imgur.com/k3i7YhD.png">
     <title>Pontos de Coleta Seletiva - Altos do Indaiá</title>
     
     <!-- Bootstrap CSS -->
@@ -115,6 +114,13 @@
             width: 100%;
             border-radius: 0.5rem;
             border: 2px dashed #198754;
+        }
+
+        .social-link {
+            transition: opacity 0.2s ease-in-out;
+        }
+        .social-link:hover {
+            opacity: 0.7;
         }
 
         @media (max-width: 768px) {
@@ -264,6 +270,12 @@
                     <img src="https://i.imgur.com/uZQXYPQ.png" alt="Foto de Carlos Henrique" class="img-fluid rounded-circle mb-3" style="width: 150px; height: 150px; border: 4px solid #198754;">
                     <h4 class="fw-bold">Carlos Henrique C. Oliveira</h4>
                     <p class="text-muted">Desenvolvedor e estudante de Engenharia da Computação</p>
+                    <div class="my-3">
+                        <a href="https://www.linkedin.com/in/carlosoliver/" target="_blank" class="text-secondary mx-2 fs-4 social-link"><i class="fab fa-linkedin"></i></a>
+                        <a href="http://instagram.com/carlosoliver" target="_blank" class="text-secondary mx-2 fs-4 social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="http://fb.com/CarlosHOliver" target="_blank" class="text-secondary mx-2 fs-4 social-link"><i class="fab fa-facebook"></i></a>
+                        <a href="https://github.com/CarlosHOliver" target="_blank" class="text-secondary mx-2 fs-4 social-link"><i class="fab fa-github"></i></a>
+                    </div>
                     <hr>
                     <div class="text-start">
                         <p>Este mapa interativo é uma ferramenta desenvolvida para facilitar a localização de pontos de coleta seletiva no bairro Altos do Indaiá, em Dourados/MS. O objetivo é conectar a comunidade a iniciativas de reciclagem, promovendo a sustentabilidade e a conscientização ambiental.</p>
@@ -470,7 +482,6 @@
             }
 
             const card = e.target.closest('.point-card');
-            // Impede que o clique no botão de rota dispare o clique no card
             const isRouteButton = e.target.closest('a');
 
             if (card && !isRouteButton) {
@@ -551,7 +562,6 @@
                     adjustmentMap.setView(position, 17);
                     draggableMarker = L.marker(position, { draggable: true }).addTo(adjustmentMap);
                     
-                    // CORREÇÃO: Força o mapa de ajuste a renderizar corretamente
                     setTimeout(() => adjustmentMap.invalidateSize(), 10);
                 } else {
                      document.getElementById('step-2-error').classList.remove('d-none');
