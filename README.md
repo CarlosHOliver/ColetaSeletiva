@@ -1,6 +1,6 @@
 # 🗺️ Mapa da Coleta Seletiva - Altos do Indaiá
 
-**Status:** Concluído | **Versão:** 1.0.0 | **Licença:** MIT
+**Status:** Concluído | **Versão:** 1.0.0 | **Licença:** AGPL
 
 Um mapa interativo e colaborativo para localizar pontos de coleta seletiva no bairro Altos do Indaiá em Dourados/MS. Este projeto foi desenvolvido como uma ferramenta prática para fortalecer a cultura da reciclagem na comunidade.
 
