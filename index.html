@@ -51,8 +51,11 @@
         
         .point-card {
             transition: all 0.3s ease;
-            cursor: pointer;
             border-left: 4px solid #198754;
+        }
+
+        .point-card .card-body {
+             cursor: pointer;
         }
         
         .point-card:hover {
@@ -393,9 +396,11 @@
             });
 
             suggestionModalEl.addEventListener('shown.bs.modal', () => {
-                if (adjustmentMap) {
-                    adjustmentMap.invalidateSize();
-                }
+                setTimeout(() => {
+                    if (adjustmentMap) {
+                        adjustmentMap.invalidateSize();
+                    }
+                }, 10);
             });
         }
 
@@ -424,21 +429,28 @@
             const card = document.createElement('div');
             card.className = `point-card p-3 mb-3 border rounded ${point.status === 'pending' ? 'status-pending' : 'status-approved'}`;
             card.dataset.pointId = point.id;
+            
+            const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(point.address + ', Dourados, MS')}`;
 
             card.innerHTML = `
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h6 class="fw-bold mb-0">${point.name}</h6>
+                    <h6 class="fw-bold mb-0 card-title-clickable">${point.name}</h6>
                     <div class="d-flex align-items-center">
                         ${point.status === 'pending' ? '<span class="badge bg-warning text-dark me-2">Aguardando Aprovação</span>' : ''}
                         ${point.status === 'pending' ? `<button class="btn btn-sm btn-outline-danger remove-suggestion-btn" data-id="${point.id}" title="Remover Sugestão"><i class="fas fa-trash-alt"></i></button>` : ''}
                     </div>
                 </div>
-                <p class="text-muted small mb-2">${point.address}</p>
-                <div class="d-flex flex-wrap">
-                    ${point.materials.map(material => `
-                        <span class="badge bg-${materialTypes[material].color} material-badge">
-                            <i class="fas ${materialTypes[material].icon} me-1"></i>${material}
-                        </span>`).join('')}
+                <p class="text-muted small mb-2 card-address-clickable">${point.address}</p>
+                <div class="d-flex flex-wrap align-items-center justify-content-between">
+                    <div>
+                        ${point.materials.map(material => `
+                            <span class="badge bg-${materialTypes[material].color} material-badge">
+                                <i class="fas ${materialTypes[material].icon} me-1"></i>${material}
+                            </span>`).join('')}
+                    </div>
+                    <a href="${googleMapsUrl}" target="_blank" class="btn btn-sm btn-primary mt-2" title="Ver rota no Google Maps">
+                        <i class="fas fa-route"></i> Rota
+                    </a>
                 </div>
             `;
             return card;
@@ -457,7 +469,10 @@
             }
 
             const card = e.target.closest('.point-card');
-            if (card) {
+            // Impede que o clique no botão de rota dispare o clique no card
+            const isRouteButton = e.target.closest('a');
+
+            if (card && !isRouteButton) {
                 const pointId = card.dataset.pointId;
                 const point = allPoints.find(p => p.id === pointId);
                 if (point) {
@@ -474,6 +489,8 @@
         }
 
         function createPopupContent(point) {
+            const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(point.address + ', Dourados, MS')}`;
+
             return `
                 <div class="popup-content">
                     <h6 class="fw-bold mb-2">${point.name}</h6>
@@ -487,6 +504,11 @@
                                     <i class="fas ${materialTypes[material].icon} me-1"></i>${material}
                                 </span>`).join('')}
                         </div>
+                    </div>
+                    <div class="mt-3 border-top pt-2">
+                        <a href="${googleMapsUrl}" target="_blank" class="btn btn-sm btn-primary w-100 text-white">
+                           <i class="fas fa-route me-1"></i> Ver Rota
+                        </a>
                     </div>
                 </div>
             `;
@@ -527,6 +549,9 @@
                     const position = [parseFloat(lat), parseFloat(lon)];
                     adjustmentMap.setView(position, 17);
                     draggableMarker = L.marker(position, { draggable: true }).addTo(adjustmentMap);
+                    
+                    // CORREÇÃO: Força o mapa de ajuste a renderizar corretamente
+                    setTimeout(() => adjustmentMap.invalidateSize(), 10);
                 } else {
                      document.getElementById('step-2-error').classList.remove('d-none');
                      document.getElementById('save-point-btn').classList.add('d-none');
