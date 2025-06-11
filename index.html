@@ -179,8 +179,8 @@
                 <div class="col-lg-8 col-xl-9 col-12">
                     <div class="position-relative">
                         <div id="map"></div>
-                        <button class="btn btn-success position-absolute top-0 start-0 m-3 d-lg-none" 
-                                style="z-index: 1000;" 
+                        <button class="btn btn-success position-absolute d-lg-none" 
+                                style="z-index: 1000; top: 10px; left: 10px;" 
                                 data-bs-toggle="offcanvas" 
                                 data-bs-target="#mobileSidebar">
                             <i class="fas fa-bars"></i>
@@ -207,8 +207,8 @@
                     <i class="fas fa-plus-circle me-2"></i> Sugerir um Ponto
                 </button>
                  <div class="text-center text-muted small">
-                    &copy; 2025 - Carlos Henrique C Oliveira - PEX - Eng. Computação. 
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#aboutModal" data-bs-dismiss="offcanvas">Mais informações</a>
+                    &copy; 2025 - Carlos Henrique C Oliveira - PEX - Eng. Computação 
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#aboutModal" data-bs-dismiss="offcanvas">Maiores informações</a>
                 </div>
             </div>
         </div>
@@ -318,7 +318,7 @@
             { id: '1', name: 'Ponto de Coleta José Roberto Teixeira', address: 'R. José Roberto Teixeira, 1665 - Altos do Indaiá, Dourados - MS, 79823-680', lat: -22.2201378, lng: -54.8456056, materials: ['Plástico', 'Papel', 'Vidro', 'Metal'], status: 'approved' },
             { id: '2', name: 'Ponto de Coleta Eikishi Sakaguti', address: 'R. Eikishi Sakaguti, 160 - Altos do Indaiá, Dourados - MS, 79823-610', lat: -22.2187264, lng: -54.8470647, materials: ['Plástico', 'Papel', 'Orgânico', 'Óleo de Cozinha'], status: 'approved' },
             { id: '3', name: 'Ponto de Coleta Mário Feitosa Rodrigues', address: 'R. Mário Feitosa Rodrigues, 1550 - Altos do Indaiá, Dourados - MS, 79823-508', lat: -22.221001, lng: -54.8373203, materials: ['Eletrônicos', 'Baterias e Pilhas', 'Metal'], status: 'approved' },
-            { id: '4', name: 'Ponto de Coleta Indaiá', address: 'R. Indaiá, 180 - Altos do Indaiá, Dourados - MS, 79822-020', lat: -22.2216865, lng: -54.8388984, materials: ['Vidro', 'Papel', 'Plástico'], status: 'approved' },
+            { id: '4', name: 'Ponto de Coleta Indaiá', address: 'R. Indaiá, 180 - Altos do Indaiá, Dourados - MS, 79822-020', lat: -22.2216865, lng: -54.8388984, materials: ['Vidro', 'Papel', 'Plástico','Metal'], status: 'approved' },
             { id: '5', name: 'Ponto de Coleta Sadamu Minohara', address: 'R. Sadamu Minohara, 200 - Alto do Indaiá, Dourados - MS, 79823-590', lat: -22.2186954, lng: -54.8478207, materials: ['Orgânico', 'Óleo de Cozinha', 'Baterias e Pilhas'], status: 'approved' }
         ];
 
@@ -373,10 +373,16 @@
         }
 
         function initializeMap() {
-            map = L.map('map').setView([-22.2200, -54.8420], 15);
+            map = L.map('map', { zoomControl: false }).setView([-22.2200, -54.8420], 15);
+            
+            L.control.zoom({
+                position: 'topright'
+            }).addTo(map);
+            
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
+            
             markersLayer.addTo(map);
         }
 
